@@ -11,6 +11,10 @@ userSchema.methods.crypto = async (password) => {
   const hash = await bcrypt.hash(password, salt);
   return hash;
 };
+userSchema.methods.verifPass = async (password, elderPassword) => {
+  const  result = await bcrypt.compare(password, elderPassword)
+  return result
+}
 
 const User = mongoose.model("User", userSchema);
 

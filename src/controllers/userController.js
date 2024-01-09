@@ -11,5 +11,19 @@ const saveUser = async (req, res) => {
     console.error(error);
   }
 };
+const login = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email }).select("+password");
+    const verify = await user.verifPass(password, user.password);
+    if (!verify) {
+      const error = new Error('Invalid Password')
+      throw error
+    }
+    res.json('Vous êtes connecté')
+  } catch (error) {
+console.error(error) 
+ }
+};
 
-export { saveUser };
+export { saveUser, login };
