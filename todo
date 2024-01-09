@@ -1,0 +1,15 @@
+Spotify-api-back:
+  L'objectif de ce projet est de concevoir et développer une application de streaming musical similaire à Spotify, offrant aux utilisateurs la possibilité de rechercher, écouter, et organiser leur musique préférée.
+
+L'application inclura des fonctionnalités telles que l'authentification des utilisateurs, la recherche de chansons, la création et la gestion de playlists, ainsi que la lecture en continu de musique.
+
+ Authentification des Utilisateurs:
+☐ Enregistrement : Les utilisateurs peuvent créer un compte en fournissant un nom d'utilisateur, une adresse e-mail et un mot de passe.
+☐ Connexion : Les utilisateurs enregistrés peuvent se connecter à leur compte avec leur adresse e-mail et leur mot de passe.
+Gestion des Playlists:
+☐ Création : Les utilisateurs peuvent créer des playlists personnalisées.
+☐ Édition : Possibilité d'ajouter, de supprimer ou de réorganiser les chansons dans une playlist.
+☐ Suppression : Les utilisateurs peuvent supprimer leurs playlists.
+ Recherche de Chansons
+☐ Recherche par Titre/Artiste : Les utilisateurs peuvent rechercher des chansons par titre ou artiste.
+☐ Filtrage : Possibilité de filtrer les résultats par genre, année, etc.
