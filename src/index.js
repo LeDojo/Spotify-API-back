@@ -6,10 +6,7 @@ const port = process.env.PORT;
 import mongoose from "mongoose";
 main().catch((err) => console.log(err));
 async function main() {
-  await mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  await mongoose.connect(process.env.MONGO_URI);
   console.log(`[📚 DATABASE ] MongoDB est connecté !!`);
 }
 app.get("/", (req, res) => res.send("WELCOME API SPOTIFY"));
