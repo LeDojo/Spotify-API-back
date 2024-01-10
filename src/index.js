@@ -5,6 +5,9 @@ const app = express();
 const port = process.env.PORT;
 import mongoose from "mongoose";
 import authRouter from "./routes/userRoute";
+import playlistRouter from "./routes/playlistRoute";
+import songRouter from "./routes/songRoute";
+import { auth } from "./middlewares/auth";
 main().catch((err) => console.log(err));
 async function main() {
   await mongoose.connect(process.env.MONGO_URI);
@@ -15,6 +18,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.get("/", (req, res) => res.send("WELCOME API SPOTIFY"));
 app.use("/auth", authRouter);
+app.use("/playlists", playlistRouter);
+app.use("/songs", songRouter);
 app.listen(port, () =>
   console.log(`[SERVER] is running on http://localhost:${port}`)
 );
