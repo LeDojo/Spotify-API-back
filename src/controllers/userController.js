@@ -1,3 +1,4 @@
+import { generateAuthToken } from "../middlewares/auth";
 import User from "../models/userModel";
 
 const saveUser = async (req, res) => {
@@ -6,7 +7,8 @@ const saveUser = async (req, res) => {
     newUser.email = req.body.email;
     newUser.password = await newUser.crypto(req.body.password);
     newUser.save();
-    res.json(newUser);
+    const token = generateAuthToken(newUser);
+    res.json({ newUser, token });
   } catch (error) {
     console.error(error);
   }
@@ -17,13 +19,15 @@ const login = async (req, res) => {
     const user = await User.findOne({ email }).select("+password");
     const verify = await user.verifPass(password, user.password);
     if (!verify) {
-      const error = new Error('Invalid Password')
-      throw error
+      const error = new Error("Invalid Password");
+      throw error;
     }
-    res.json('Vous êtes connecté')
+    const token = generateAuthToken(user);
+
+    res.json({ message: "Vous êtes connecté", token });
   } catch (error) {
-console.error(error) 
- }
+    console.error(error);
+  }
 };
 
 export { saveUser, login };

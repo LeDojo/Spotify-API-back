@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import authRouter from "./routes/userRoute";
 import playlistRouter from "./routes/playlistRoute";
 import songRouter from "./routes/songRoute";
+import { auth } from "./middlewares/auth";
 main().catch((err) => console.log(err));
 async function main() {
   await mongoose.connect(process.env.MONGO_URI);
