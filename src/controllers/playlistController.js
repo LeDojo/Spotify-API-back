@@ -8,7 +8,7 @@ const addPlaylist = async (req, res) => {
       title,
       user: req.user._id,
     });
-    console.log(req.user)
+    console.log(req.user);
 
     if (existingPlaylist) {
       return res
@@ -22,7 +22,7 @@ const addPlaylist = async (req, res) => {
       user: req.user._id,
     });
 
-    await newPlaylist.save(); 
+    await newPlaylist.save();
 
     res.status(201).json(newPlaylist);
   } catch (error) {
@@ -31,10 +31,17 @@ const addPlaylist = async (req, res) => {
 };
 const allPlaylist = async (req, res) => {
   try {
-    const playlists = await Playlist.find({ user: req.user.id }).populate(
-      "songs"
-    );
+    const playlists = await Playlist.find().populate("songs");
     res.json(playlists);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const onePlaylist = async (req, res) => {
+  try {
+    const playlist = await Playlist.findById(req.params.id).populate("songs");
+    res.json(playlist);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -66,4 +73,24 @@ const addSongToPlaylist = async (req, res) => {
   }
 };
 
-export { addPlaylist, allPlaylist, addSongToPlaylist };
+const deleteSongFromPlaylist = async (req, res) => {
+  const { playlistId, songId } = req.params;
+
+  try {
+    const playlist = await Playlist.findById(playlistId);
+    const song = await Song.findById(songId);
+    playlist.songs.pull(song);
+    await playlist.save();
+    res.json(playlist);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export {
+  addPlaylist,
+  allPlaylist,
+  onePlaylist,
+  addSongToPlaylist,
+  deleteSongFromPlaylist,
+};
