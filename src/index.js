@@ -8,12 +8,15 @@ import authRouter from "./routes/userRoute";
 import playlistRouter from "./routes/playlistRoute";
 import songRouter from "./routes/songRoute";
 import { auth } from "./middlewares/auth";
+import cors from "cors";
+
 main().catch((err) => console.log(err));
 async function main() {
   await mongoose.connect(process.env.MONGO_URI);
   console.log(`[📚 DATABASE ] MongoDB est connecté !!`);
 }
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.get("/", (req, res) => res.send("WELCOME API SPOTIFY"));
