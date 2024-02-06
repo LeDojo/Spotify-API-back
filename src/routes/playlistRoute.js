@@ -13,7 +13,7 @@ const playlistRouter = Router();
 
 playlistRouter.get("/all", allPlaylist);
 playlistRouter.get("/:id", onePlaylist);
-playlistRouter.post("/create-playlist", auth, addPlaylist);
+playlistRouter.post("/create-playlist", addPlaylist);
 playlistRouter.post("/:playlistId/add-song/:songId", addSongToPlaylist);
 playlistRouter.put("/:playlistId/delete-song/:songId", deleteSongFromPlaylist);
 playlistRouter.post("/createFakeData", auth, createFakeData);

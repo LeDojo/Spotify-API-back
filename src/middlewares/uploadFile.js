@@ -6,6 +6,11 @@ import path from "path";
 const imageStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadPath = path.join(__dirname, "..", "uploads", "images");
+    // Create the directory if it doesn't exist
+    const fs = require("fs");
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
+    }
     cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
@@ -19,6 +24,13 @@ const imageStorage = multer.diskStorage({
 const audioStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadPath = path.join(__dirname, "..", "uploads", "audio");
+
+    // Create the directory if it doesn't exist
+    const fs = require("fs");
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
+    }
+
     cb(null, uploadPath);
   },
   filename: (req, file, cb) => {

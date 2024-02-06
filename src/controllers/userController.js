@@ -13,6 +13,7 @@ const saveUser = async (req, res) => {
     console.error(error);
   }
 };
+
 const login = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -24,9 +25,9 @@ const login = async (req, res) => {
     }
     const token = generateAuthToken(user);
 
-    res.json({ message: "Vous êtes connecté", token });
+    res.json({ message: "success", token });
   } catch (error) {
-    console.error(error);
+    res.json({ message: "error " + error });
   }
 };
 

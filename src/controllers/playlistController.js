@@ -1,15 +1,16 @@
+import { fakeData } from "../fakeData";
 import Playlist from "../models/playlistModel";
 import Song from "../models/songModel";
 
 const addPlaylist = async (req, res) => {
   const { title, description } = req.body;
+  console.log(req.body);
 
   try {
     const existingPlaylist = await Playlist.findOne({
       title,
-      user: req.user._id,
+      user: "65ae3e34d956f0114a677eed",
     });
-    console.log(req.user);
 
     if (existingPlaylist) {
       return res
@@ -20,7 +21,7 @@ const addPlaylist = async (req, res) => {
     const newPlaylist = new Playlist({
       title,
       description,
-      user: req.user._id,
+      user: "65ae3e34d956f0114a677eed",
     });
 
     await newPlaylist.save();
@@ -90,131 +91,37 @@ const deleteSongFromPlaylist = async (req, res) => {
 };
 
 const createFakeData = async (req, res) => {
-  let playlist;
-  let song;
+  for (const playlist of fakeData) {
+    const newPlaylist = new Playlist({
+      title: playlist.title,
+      description: playlist.description,
+      user: req.user._id,
+    });
 
-  playlist = new Playlist({
-    title: "Reggae",
-    description: "Ma playlist reggae",
-    user: req.user._id,
-  });
+    // Use Promise.all to wait for all song creation promises to resolve
+    const songPromises = playlist.songs.map(async (song) => {
+      const newSong = new Song({
+        title: song.title,
+        artist: song.artist,
+        genre: song.genre,
+        fileUrl: song.fileUrl,
+      });
 
-  song = new Song({
-    title: "No woman no cry",
-    artist: "Bob marley",
-    genre: "Reggae",
-    fileUrl: "http://example.com/file.mp3",
-  });
+      await newSong.save();
+      return newSong._id; // Assuming you want to store song IDs in the playlist
+    });
 
-  await song.save();
+    const songIds = await Promise.all(songPromises);
+    newPlaylist.songs.push(...songIds); // Add all song IDs to the playlist
 
-  playlist.songs.push(song);
-  await playlist.save();
+    await newPlaylist.save(); // Save the playlist after all songs have been added
+  }
 
-  song = new Song({
-    title: "Three little birds",
-    artist: "Bob marley",
-    genre: "Reggae",
-    fileUrl: "http://example.com/file.mp3",
-  });
-
-  await song.save();
-
-  playlist.songs.push(song);
-  await playlist.save();
-
-  song = new Song({
-    title: "Kaya",
-    artist: "Bob marley",
-    genre: "Reggae",
-    fileUrl: "http://example.com/file.mp3",
-  });
-
-  await song.save();
-
-  playlist.songs.push(song);
-  await playlist.save();
-
-  song = new Song({
-    title: "Babylon",
-    artist: "Bob marley",
-    genre: "Reggae",
-    fileUrl: "http://example.com/file.mp3",
-  });
-
-  await song.save();
-
-  playlist.songs.push(song);
-  await playlist.save();
-
-  playlist = new Playlist({
-    title: "Rap US",
-    description: "Ma playlist RAP US",
-    user: req.user._id,
-  });
-
-  song = new Song({
-    title: "Candy shop",
-    artist: "50 Cent",
-    genre: "Reggae",
-    fileUrl: "http://example.com/file.mp3",
-  });
-
-  await song.save();
-
-  playlist.songs.push(song);
-  await playlist.save();
-
-  song = new Song({
-    title: "California love",
-    artist: "2PAC",
-    genre: "Reggae",
-    fileUrl: "http://example.com/file.mp3",
-  });
-
-  await song.save();
-
-  playlist.songs.push(song);
-  await playlist.save();
-
-  song = new Song({
-    title: "Dear mama",
-    artist: "2pac",
-    genre: "Reggae",
-    fileUrl: "http://example.com/file.mp3",
-  });
-
-  await song.save();
-
-  playlist.songs.push(song);
-  await playlist.save();
-
-  song = new Song({
-    title: "Hold us",
-    artist: "Maklemore",
-    genre: "Reggae",
-    fileUrl: "http://example.com/file.mp3",
-  });
-
-  await song.save();
-
-  playlist.songs.push(song);
-  await playlist.save();
-
-  song = new Song({
-    title: "La macarena",
-    artist: "Philippe Poutou",
-    genre: "Reggae",
-    fileUrl: "http://example.com/file.mp3",
-  });
-
-  await song.save();
-
-  playlist.songs.push(song);
-  await playlist.save();
+  const numberOfPlaylists = await Playlist.countDocuments();
+  const numberOfSongs = await Song.countDocuments();
 
   res.json({
-    message: "success",
+    message: `Created ${numberOfPlaylists} playlists and ${numberOfSongs} songs.`,
   });
 };
 

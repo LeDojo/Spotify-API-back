@@ -1,9 +1,10 @@
 import jwt from "jsonwebtoken";
 import "dotenv/config";
+
 const auth = (req, res, next) => {
   // Récupérer le token JWT de l'en-tête Authorization
   const tokenHeader = req.headers.authorization;
-  const token = tokenHeader.split(' ')[1];
+  const token = tokenHeader.split(" ")[1];
 
   // Vérifier si le token existe
   if (!token) {
