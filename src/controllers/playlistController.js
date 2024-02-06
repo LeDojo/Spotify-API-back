@@ -4,7 +4,6 @@ import Song from "../models/songModel";
 
 const addPlaylist = async (req, res) => {
   const { title, description } = req.body;
-  console.log(req.body);
 
   try {
     const existingPlaylist = await Playlist.findOne({
